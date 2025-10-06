@@ -20,21 +20,26 @@ public class CompteurDeCaracteresCallable implements Callable<ResultatDuCompte> 
     }
 
     @Override
-    public ResultatDuCompte call() throws Exception {
-        Instant start = Instant.now();
+    public ResultatDuCompte call() {
+        try {
+            Instant start = Instant.now();
 
-        // Téléchargement du contenu
-        String contenu = "";
-        try (Scanner scanner = new Scanner(new URL(urlATraiter).openStream(), StandardCharsets.UTF_8)) {
-            contenu = scanner.useDelimiter("\\A").next();
+            // Téléchargement du contenu
+            String contenu = "";
+            try (Scanner scanner = new Scanner(new URL(urlATraiter).openStream(), StandardCharsets.UTF_8)) {
+                contenu = scanner.useDelimiter("\\A").next();
+            }
+
+            int nombreDeCaracteres = contenu.length();
+            Duration tempsDeCalcul = Duration.between(start, Instant.now());
+
+            System.out.printf("Il y a %d caractères dans l'URL %s (%s ms) %n",
+                    nombreDeCaracteres, urlATraiter, tempsDeCalcul.toMillis());
+
+            return new ResultatDuCompte(nombreDeCaracteres, tempsDeCalcul);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultatDuCompte(0, Duration.ZERO);
         }
-
-        int nombreDeCaracteres = contenu.length();
-        // Combien de temps ça a pris pour calculer le résultat
-        Duration tempsDeCalcul = Duration.between(start, Instant.now());
-
-        System.out.printf("Il y a %d caractères dans l'URL %s (%s ms) %n", nombreDeCaracteres, urlATraiter,tempsDeCalcul.toMillis());
-
-        return new ResultatDuCompte(nombreDeCaracteres, tempsDeCalcul);
     }
 }
