@@ -35,8 +35,7 @@ public class CompteurDeCaracteresRunnable implements Runnable {
             // Combien de temps ça a pris pour calculer le résultat
             Duration tempsDeCalcul = Duration.between(start, Instant.now());
 
-            System.out.printf("Il y a %d caractères dans l'URL %s (%s ms) %n", nombreDeCaracteres, urlATraiter,
-                    tempsDeCalcul.toMillis());
+            System.out.printf("Il y a %d caractères dans l'URL %s (%s ms) %n", nombreDeCaracteres, urlATraiter,tempsDeCalcul.toMillis());
 
             this.resultat = new ResultatDuCompte(nombreDeCaracteres, tempsDeCalcul);
 
